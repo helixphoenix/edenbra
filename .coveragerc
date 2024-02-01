@@ -1,0 +1,6 @@
+[run]
+source = edenbra
+omit = 
+    tests/*
+    autoapp.py
+
