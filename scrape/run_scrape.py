@@ -1,3 +1,8 @@
+# Autorship information
+__author__ = "Hüsamettin Deniz Özeren"
+__copyright__ = "Copyright 2024"
+__maintainer__ = "Hüsamettin Deniz Özeren"
+
 import asyncio
 import json
 from typing import List
@@ -10,6 +15,8 @@ from urllib.parse import urlencode
 import pandas as pd
 import time
 from tqdm import tqdm
+import os
+import sys
 
 # 1. establish HTTP client with browser-like headers to avoid being blocked
 client = AsyncClient(
@@ -218,7 +225,10 @@ async def run3():
 
 
 async def run_save():
-    location_id = (await find_locations("edinburgh"))[0]
+
+    print("running rightmove scrape and saving results to " + os.path.join('results', sys.argv[1] + '.csv') + " directory")
+
+    location_id = (await find_locations(sys.argv[1]))[0]
     location_results = await scrape_search(location_id)
     # print(json.dumps(location_results, indent=2))
 
@@ -232,6 +242,7 @@ async def run_save():
 
     #print(feature_list)
     df = pd.DataFrame(feature_list)
+    df.to_csv(os.path.join('results', sys.argv[1] + '.csv'), index=False)
 
 if __name__ == "__main__":
     asyncio.run(run_save())
